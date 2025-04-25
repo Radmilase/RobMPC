@@ -1,0 +1,143 @@
+<mujoco>
+  <compiler autolimits="true"/>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
+    
+  </asset>
+
+  <default>
+    <joint damping=".03" actuatorfrcrange="-0.5 0.5"/>
+    <default class="wheel">
+      <geom type="cylinder" size=".03 .01" rgba=".5 .5 1 0.5"/>
+    </default>
+    <default class="decor">
+      <site type="box" rgba=".5 1 .5 0.8"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <geom type="plane" size="3 3 .01" material="grid"/>
+    <body name="car" pos="0 0 .03">
+      <freejoint/>
+      <light name="top light" pos="0 0 2" mode="trackcom" diffuse=".4 .4 .4"/>
+      <geom name="chasis" type="box" size="0.07 0.045 0.02" rgba="0.9 0.1 1 0.9"/>
+      <body name="left wheel" pos="-.07 .06 0" zaxis="0 1 0">
+        <joint name="left"/>
+        <geom class="wheel"/>
+        <site class="decor" size=".006 .025 .0115"/>
+        <site class="decor" size=".025 .006 .0115"/>
+      </body>
+      <body name="right wheel" pos="-.07 -.06 0" zaxis="0 1 0">
+        <joint name="right"/>
+        <geom class="wheel"/>
+        <site class="decor" size=".006 .025 .0115"/>
+        <site class="decor" size=".025 .006 .0115"/>
+      </body>
+      <body name="front left wheel" pos=".07 .06 0" zaxis="0 1 0">
+        <joint name="front left"/>
+        <geom class="wheel"/>
+        <site class="decor" size=".006 .025 .0115"/>
+        <site class="decor" size=".025 .006 .0115"/>
+      </body>
+      <body name="front right wheel" pos=".07 -.06 0" zaxis="0 1 0">
+        <joint name="front right"/>
+        <geom class="wheel"/>
+        <site class="decor" size=".006 .025 .0115"/>
+        <site class="decor" size=".025 .006 .0115"/>
+      </body>
+      <body name="fixed" pos="0.07 0 0" zaxis="1 0 0">
+        <geom name="g4" type="box" size="0.001 0.045 0.001" rgba="0 0.5 0.5 1"/>
+        <site name="s0" size="0.003" pos="0 0.045 0"/>
+        <site name="s1" size="0.003" pos="0 -0.045 0"/>
+
+     </body>
+
+      <body name="os_ackerm" pos="0.04 0 0">
+        <joint name="acker" type="slide" axis="0 1 0" />
+        <geom type="box" size="0.001 0.035 0.001" rgba="1 0.3 0.3 1" />
+        <site name="s5" size="0.003" pos="0 -0.035 0" rgba="1 0.5 0.5 1"/>
+        <site name="s6" size="0.003" pos="0 0.035 0" rgba="1 0.5 0.5 1"/>
+      </body>
+
+
+    <!-- Новый site для IMU -->
+    <site name="imu" pos="0 0 0.02" size="0.005" rgba="1 1 0 1"/>
+    <!-- Сенсоры расстояния / касания -->
+    <site name="sensor_front" pos="0.09 0 0.02" size="0.005" rgba="1 0 0 1"/>
+    <site name="sensor_left"  pos="0 0.07 0.02" size="0.005" rgba="0 1 0 1"/>
+    <site name="sensor_right" pos="0 -0.07 0.02" size="0.005" rgba="0 0 1 1"/>
+
+
+
+
+
+
+    </body>
+  </worldbody>
+
+  <tendon>
+    <fixed name="forward">
+      <joint joint="front left" coef=".5"/>
+      <joint joint="front right" coef=".5"/>
+    </fixed>
+    <fixed name="turn">
+      <joint joint="front left" coef="-1"/>
+      <joint joint="front right" coef="1"/>
+    </fixed>
+
+    <fixed name="turn left wheel">
+      <joint joint="front left" coef="-0.5"/>
+    </fixed>
+
+    <fixed name="turn right wheel">
+      <joint joint="front right" coef="-0.5"/>
+    </fixed>
+
+    <spatial  width=".001" stiffness="0.1">
+      <site site="s0"/>
+      <site site="s6"/>
+      <site site="s5"/>
+      <site site="s1"/>
+    </spatial>
+
+  </tendon>
+
+  <actuator>
+    <motor name="forward" tendon="forward" ctrlrange="-100 100"/>
+    <motor name="turn" tendon="turn" ctrlrange="-180 180"/>
+
+    
+    <motor name="turn left wheel" tendon="turn left wheel" ctrlrange="-1 1"/>
+    <motor name="turn right wheel" tendon="turn right wheel" ctrlrange="-1 1"/>
+  </actuator>
+
+
+
+
+
+   <sensor>
+    <!-- Датчики нагрузки на двигатели -->
+    <jointactuatorfrc name="right" joint="right"/>
+    <jointactuatorfrc name="left" joint="left"/>
+
+    <!-- Гироскоп -->
+    <gyro name="gyro" site="imu"/>
+
+    <!-- Акселерометр -->
+    <accelerometer name="accel" site="imu"/>
+
+    <!-- Лазерные дальномеры -->
+    <rangefinder name="range_front" site="sensor_front"/>
+    <rangefinder name="range_left" site="sensor_left"/>
+    <rangefinder name="range_right" site="sensor_right"/>
+
+    <!-- Сенсоры контакта (тач-сенсоры) -->
+    <touch name="touch_front" site="sensor_front"/>
+    <touch name="touch_left" site="sensor_left"/>
+    <touch name="touch_right" site="sensor_right"/>
+  </sensor>
+
+
+</mujoco>
