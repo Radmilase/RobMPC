@@ -147,7 +147,7 @@
   <actuator>
     <motor name="forward" tendon="forward" ctrlrange="-100 100"/>
     <motor name="turn" tendon="turn" ctrlrange="-180 180"/>
-    <!-- 🔧 Новые моторы для поворота передних колес -->    
+    <!-- моторы для поворота передних колес -->    
     <motor name="steer_left" joint="turn_front_left" ctrlrange="-0.5 0.5"/>
     <motor name="steer_right" joint="turn_front_right" ctrlrange="-0.5 0.5"/>
     
