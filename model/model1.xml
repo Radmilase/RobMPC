@@ -75,6 +75,13 @@
 
 
       </body>
+    <!-- Новый site для IMU -->
+    <site name="imu" pos="0 0 0.02" size="0.005" rgba="1 1 0 1"/>
+    <!-- Сенсоры расстояния / касания -->
+    <site name="sensor_front" pos="0.09 0 0.02" size="0.005" rgba="1 0 0 1"/>
+    <site name="sensor_left"  pos="0 0.07 0.02" size="0.005" rgba="0 1 0 1"/>
+    <site name="sensor_right" pos="0 -0.07 0.02" size="0.005" rgba="0 0 1 1"/>
+
 
 
 
@@ -156,5 +163,26 @@
   <sensor>
     <jointactuatorfrc name="right" joint="right"/>
     <jointactuatorfrc name="left" joint="left"/>
+
+    <!-- Гироскоп -->
+    <gyro name="gyro" site="imu"/>
+
+    <!-- Акселерометр -->
+    <accelerometer name="accel" site="imu"/>
+
+    <!-- Лазерные дальномеры -->
+    <rangefinder name="range_front" site="sensor_front"/>
+    <rangefinder name="range_left" site="sensor_left"/>
+    <rangefinder name="range_right" site="sensor_right"/>
+
+    <!-- Сенсоры контакта (тач-сенсоры) -->
+    <touch name="touch_front" site="sensor_front"/>
+    <touch name="touch_left" site="sensor_left"/>
+    <touch name="touch_right" site="sensor_right"/>
+
+
+
+
+
   </sensor>
 </mujoco>

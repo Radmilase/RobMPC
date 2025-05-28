@@ -1,43 +1,36 @@
 import mujoco
 import cv2
-import numpy as np
 import time
+import mujoco.viewer
+
 
 def main():
     try:
-        # Загрузка модели
         model = mujoco.MjModel.from_xml_path("C:/Users/rad/ptur/RobMPC/model/scene_2.xml")
         data = mujoco.MjData(model)
         
-        # Создание рендерера
         renderer = mujoco.Renderer(model, width=640, height=480)
+        viewer = mujoco.viewer.launch_passive(model, data)  # создаём viewer из mujoco-viewer
         
-        # Основной цикл симуляции
         while True:
             start_time = time.time()
             
-            # Шаг симуляции
             mujoco.mj_step(model, data)
             
-            # Обновление сцены с камеры робота
             renderer.update_scene(data, camera="front_cam")
-            
-            # Рендеринг
             img = renderer.render()
-            
-            # Конвертация цветового пространства (MuJoCo RGB → OpenCV BGR)
             img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
             
-            # Отображение
             cv2.imshow("Robot Camera View", img_bgr)
             
-            # Управление (выход по ESC)
+            # Обновляем окно viewer (интерактивное 3D)
+            viewer.render()
+            
             if cv2.waitKey(1) == 27:
                 break
-                
-            # Контроль частоты кадров
+            
             elapsed = time.time() - start_time
-            if elapsed < 0.01:  # timestep 0.01s
+            if elapsed < 0.01:
                 time.sleep(0.01 - elapsed)
                 
     except Exception as e:
@@ -46,6 +39,8 @@ def main():
         cv2.destroyAllWindows()
         if 'renderer' in locals():
             renderer.close()
+        if 'viewer' in locals():
+            viewer.close()
         print("Simulation ended")
 
 if __name__ == "__main__":

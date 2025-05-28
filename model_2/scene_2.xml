@@ -1,6 +1,6 @@
 <mujoco model="model scene">
   <!-- <include file="1_wheel.xml"/> -->
-  <include file="model1.xml"/>
+  <include file="car.xml"/>
 
   <!-- Add some fluid viscosity to prevent the hanging box from jiggling forever -->
   <option viscosity="0.5"/>
