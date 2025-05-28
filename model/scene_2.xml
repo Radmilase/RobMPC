@@ -1,10 +1,18 @@
 <mujoco model="model scene">
-  <include file="model.xml"/>
+  <!-- <include file="1_wheel.xml"/> -->
+  <include file="model1.xml"/>
 
   <!-- Add some fluid viscosity to prevent the hanging box from jiggling forever -->
   <option viscosity="0.5"/>
 
-  <statistic center="0 0 0.05" extent="0.3"/>
+  <statistic center="0 0 1" extent="0.3"/>
+
+  <visual>
+    <!-- Настройки камеры для хорошего обзора модели -->
+    <global azimuth="120" elevation="-20"/>
+    <map znear="0.01" zfar="10"/>
+    <quality shadowsize="2048"/>
+  </visual>
 <!-- 
   <visual>
     <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>

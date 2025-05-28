@@ -8,60 +8,53 @@
   </asset>
 
   <default>
-    <joint damping=".03" actuatorfrcrange="-0.5 0.5"/>
-    <default class="wheel">
-      <geom type="cylinder" size=".03 .01" rgba=".5 .5 1 0.5"/>
-    </default>
+    <joint damping=".001" />
     <default class="decor">
       <site type="box" rgba=".5 1 .5 0.8"/>
+    </default>
+    <default class="wheel">
+      <geom type="cylinder" size=".03 .01" rgba=".5 .5 1 0.5" friction="1.0 0.005 0.0001"/>
     </default>
   </default>
 
   <worldbody>
     <geom type="plane" size="5 5 .01" material="grid"/>
-    <body name="car" pos="-1.9 1.3 .03" euler="0 0 -90">
-      <freejoint/>
+    <body name="car" pos="-1.9 1.3 .03" euler="0 0 -90" >
+
+       <!-- Камера, следящая за телом -->
+      <!-- <camera name="body_cam" mode="targetbody" pos="0 0 1" target="robot_body"/> -->
+      <site name="camera_site" pos="0.1 0 0.05" euler="0 15 0" size="0.001"/>
+      <!-- <freejoint/> -->
       <light name="top light" pos="0 0 2" mode="trackcom" diffuse=".4 .4 .4"/>
       <geom name="chasis" type="box" size="0.07 0.045 0.02" rgba="0.9 0.1 1 0.9"/>
-      <body name="left wheel" pos="-.07 .06 0" zaxis="0 1 0">
-        <joint name="left"/>
-        <geom class="wheel"/>
-        <site class="decor" size=".006 .025 .0115"/>
-        <site class="decor" size=".025 .006 .0115"/>
-      </body>
-      <body name="right_wheel" pos="-.07 -.06 0" zaxis="0 1 0">
-        <joint name="right"/>
-        <geom class="wheel"/>
-        <site class="decor" size=".006 .025 .0115"/>
-        <site class="decor" size=".025 .006 .0115"/>
-      </body>
-      <!-- <body name="front left wheel" pos=".07 .06 0" zaxis="0 1 0">
-        <joint name="front_left" />
-        <joint name="turn_front_left" axis="0 1 0" range="0 45" />
 
+      <body name="back_left_wheel" pos="-.07 .06 0" zaxis="0 1 0" >
+        <joint name="back_left"  type="hinge" axis="0 0 1"/>
         <geom class="wheel"/>
+        <geom type="sphere" size="0.001" mass="0.001" rgba="0 0 0 0"/>    
+
         <site class="decor" size=".006 .025 .0115"/>
         <site class="decor" size=".025 .006 .0115"/>
       </body>
-      <body name="front right wheel" pos=".07 -.06 0" zaxis="0 1 0">
-        <joint name="turn_front_right" axis="0 0 1" range="0 45" />
-        <body pos="0 0 0" zaxis="0 1 0">
-          <joint name="front_right" type="hinge" axis="0 1 0"//>
-          <geom class="wheel"/>
-          <site class="decor" size=".006 .025 .0115"/>
-          <site class="decor" size=".025 .006 .0115"/>
-        </body>  
-      </body> -->
-            <!-- FRONT LEFT WHEEL with steering -->
+      <body name="back_right_wheel" pos="-.07 -.06 0" zaxis="0 1 0">
+        <joint name="back_right"  type="hinge" axis="0 0 1"/>
+        <geom class="wheel"/>
+        <geom type="sphere" size="0.001" mass="0.001" rgba="0 0 0 0"/>    
+
+        <site class="decor" size=".006 .025 .0115"/>
+        <site class="decor" size=".025 .006 .0115"/>
+      </body>
+
+      <!-- FRONT LEFT WHEEL with steering -->
       <body name="front_left_caster" pos=".07 .06 0">
        <!-- Добавляем маленький невидимый geom для массы -->
         <geom type="sphere" size="0.001" mass="0.001" rgba="0 0 0 0"/>    
         <!-- Поворот влево/вправо (рулевое управление) -->
-        <joint name="turn_front_left" type="hinge" axis="0 0 1"/>
+        <joint name="turn_front_left" range="-30 45" type="hinge" axis="0 0 1"/>
         
         <body name="front_left_wheel" pos="0 0 0" zaxis="0 1 0">
           <!-- Вращение колеса -->
-          <joint name="front_left" type="hinge" axis="0 1 0"/>
+          <joint name="front_left" type="hinge" axis="0 0 1"/>
           <geom class="wheel"/>
           <site class="decor" size=".006 .025 .0115"/>
           <site class="decor" size=".025 .006 .0115"/>
@@ -73,35 +66,21 @@
         <geom type="sphere" size="0.001" mass="0.001" rgba="0 0 0 0"/>    
 
         <!-- Поворот вправо/влево -->
-        <joint name="turn_front_right" type="hinge" axis="0 0 1"/>
+        <joint name="turn_front_right" range="-45 30"  type="hinge" axis="0 0 1"/>
+
         
         <body name="front_right_wheel" pos="0 0 0" zaxis="0 1 0">
           <!-- Вращение колеса -->
-          <joint name="front_right" type="hinge" axis="0 1 0"/>
+          <joint name="front_right" type="hinge" axis="0 0 1"/>
           <geom class="wheel"/>
           <site class="decor" size=".006 .025 .0115"/>
           <site class="decor" size=".025 .006 .0115"/>
         </body>
       </body>
 
-
-
-
-      <body name="fixed" pos="0.07 0 0" zaxis="1 0 0">
-        <geom name="g4" type="box" size="0.001 0.045 0.001" rgba="0 0.5 0.5 1"/>
-        <site name="s0" size="0.003" pos="0 0.045 0"/>
-        <site name="s1" size="0.003" pos="0 -0.045 0"/>
-
-     </body>
-<!-- 
-      <body name="os_ackerm" pos="0.04 0 0">
-        <joint name="acker" type="slide" axis="0 1 0" />
-        <geom type="box" size="0.001 0.035 0.001" rgba="1 0.3 0.3 1" />
-        <site name="s5" size="0.003" pos="0 -0.035 0" rgba="1 0.5 0.5 1"/>
-        <site name="s6" size="0.003" pos="0 0.035 0" rgba="1 0.5 0.5 1"/>
-      </body> -->
-
-
+    <camera name="front_cam" mode="fixed" pos="0.1 0 0.2" euler="0 -50 270" fovy="120"/>   
+    <!-- <camera name="body_cam" mode="targetbody" pos="0 0 0.5" euler="0 0 0" target="robot_body"/> -->
+    
     <!-- Новый site для IMU -->
     <site name="imu" pos="0 0 0.02" size="0.005" rgba="1 1 0 1"/>
     <!-- Сенсоры расстояния / касания -->
@@ -123,36 +102,24 @@
       <joint joint="front_right" coef=".5"/>
     </fixed>
     <fixed name="turn">
-      <joint joint="turn_front_left" coef="-1"/>
+      <joint joint="turn_front_left" coef="1"/>
       <joint joint="turn_front_right" coef="1"/>
     </fixed>
 
-    <fixed name="turn left wheel">
-      <joint joint="front_left" coef="-0.5"/>
-    </fixed>
+    <!-- <fixed name="4x4">
+      <joint joint="front_left" coef=".5"/>
+      <joint joint="front_right" coef=".5"/>
+      <joint joint="back_left" coef=".5"/>
+      <joint joint="back_right" coef=".5"/>
+    </fixed> -->
 
-    <fixed name="turn right wheel">
-      <joint joint="front_right" coef="-0.5"/>
-    </fixed>
-
-    <!-- <spatial  width=".001" stiffness="0.1">
-      <site site="s0"/>
-      <site site="s6"/>
-      <site site="s5"/>
-      <site site="s1"/>
-    </spatial> -->
-
+  
   </tendon>
 
   <actuator>
     <motor name="forward" tendon="forward" ctrlrange="-100 100"/>
-    <motor name="turn" tendon="turn" ctrlrange="-180 180"/>
-    <!-- моторы для поворота передних колес -->    
-    <motor name="steer_left" joint="turn_front_left" ctrlrange="-0.5 0.5"/>
-    <motor name="steer_right" joint="turn_front_right" ctrlrange="-0.5 0.5"/>
-    
-    <!-- <motor name="turn left wheel" tendon="turn left wheel" ctrlrange="-1 1"/>
-    <motor name="turn right wheel" tendon="turn right wheel" ctrlrange="-1 1"/> -->
+    <!-- <motor name="turn" tendon="turn" ctrlrange="-45 45"/> -->
+    <!-- <motor name="4x4" tendon="4x4" ctrlrange="-100 100"/> -->
   </actuator>
 
 
@@ -161,8 +128,8 @@
 
    <sensor>
     <!-- Датчики нагрузки на двигатели -->
-    <jointactuatorfrc name="right" joint="right"/>
-    <jointactuatorfrc name="left" joint="left"/>
+    <jointactuatorfrc name="right" joint="back_right"/>
+    <jointactuatorfrc name="left" joint="back_left"/>
 
     <!-- Гироскоп -->
     <gyro name="gyro" site="imu"/>
@@ -179,7 +146,13 @@
     <touch name="touch_front" site="sensor_front"/>
     <touch name="touch_left" site="sensor_left"/>
     <touch name="touch_right" site="sensor_right"/>
-  </sensor>
 
+  
+  
+   </sensor>
+
+<visual>
+  <global offwidth="640" offheight="480"/>
+</visual>
 
 </mujoco>

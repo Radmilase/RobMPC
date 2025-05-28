@@ -1,0 +1,119 @@
+<mujoco>
+  <compiler autolimits="true"/>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
+    <mesh name="chasis" scale=".01 .006 .0015"
+      vertex=" 9   2   0
+              -10  10  10
+               9  -2   0
+               10  3  -10
+               10 -3  -10
+              -8   10 -10
+              -10 -10  10
+              -8  -10 -10
+              -5   0   20"/>
+    
+    <!-- Текстуры для камеры -->
+    <texture name="camera_tex" type="2d" builtin="gradient" width="320" height="240"/>
+    <material name="camera_mat" texture="camera_tex"/>
+  </asset>
+
+  <default>
+    <joint damping=".03" actuatorfrcrange="-0.5 0.5"/>
+    <default class="wheel">
+      <geom type="cylinder" size=".03 .01" rgba=".5 .5 1 1"/>
+    </default>
+    <default class="decor">
+      <site type="box" rgba=".5 1 .5 1"/>
+    </default>
+    <default class="sensor">
+      <site type="sphere" size="0.01" rgba="1 0 0 0.5"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <geom type="plane" size="3 3 .01" material="grid"/>
+    
+    <!-- Камеры должны быть в worldbody -->
+    <camera name="front_cam" mode="fixed" pos="0.5 0 0.3" xyaxes="1 0 0 0 1 1" fovy="60"/>
+    <camera name="global_view" pos="0 0 2" xyaxes="1 0 0 0 1 0" fovy="45"/>
+    
+    <!-- Препятствия -->
+    <geom name="obstacle1" type="box" pos="1.0 0.5 0.1" size="0.1 0.1 0.1"/>
+    <geom name="obstacle2" type="box" pos="0.5 -0.7 0.1" size="0.1 0.1 0.1"/>
+    
+    <body name="car" pos="0 0 .03">
+      <freejoint/>
+      <light name="top light" pos="0 0 2" mode="trackcom" diffuse=".4 .4 .4"/>
+      
+      <!-- Тело робота -->
+      <body pos="0 0 0.04">
+        <geom name="chasis" type="mesh" mesh="chasis"/>
+        
+        <!-- Камера на роботе с улучшенными параметрами -->
+        <camera name="robot_cam" pos="0.1 0 0.1" xyaxes="1 0 0 0 1 1" fovy="70">
+          <resolution width="320" height="240"/>
+        </camera>
+      </body>
+
+      <!-- Датчики -->
+      <site name="front_sensor" class="sensor" pos="0.15 0 0.05"/>
+      <site name="right_sensor" class="sensor" pos="0.05 -0.08 0.05"/>
+      <site name="left_sensor" class="sensor" pos="0.05 0.08 0.05"/>
+
+      <!-- Переднее колесо с рулевым управлением -->
+      <body name="front wheel" pos=".1 0 0" zaxis="0 1 0">
+        <geom type="cylinder" size=".02 .01" rgba=".5 .5 1 1"/>
+        <joint name="steer" type="hinge" range="-30 30" axis="0 1 0"/>
+        <joint name="steer2" type="hinge"/>
+        <light name="front light" pos=".1 0 .02" dir="2 0 -1" diffuse="1 1 1"/>
+      </body>
+      
+      <!-- Задние колеса -->
+      <body name="left wheel" pos="-.07 .06 0" zaxis="0 1 0">
+        <joint name="left"/>
+        <geom class="wheel"/>
+        <site class="decor" size=".006 .025 .012"/>
+        <site class="decor" size=".025 .006 .012"/>
+      </body>
+      
+      <body name="right wheel" pos="-.07 -.06 0" zaxis="0 1 0">
+        <joint name="right"/>
+        <geom class="wheel"/>
+        <site class="decor" size=".006 .025 .012"/>
+        <site class="decor" size=".025 .006 .012"/>
+      </body>
+    </body>
+  </worldbody>
+
+  <tendon>
+    <fixed name="forward">
+      <joint joint="left" coef=".5"/>
+      <joint joint="right" coef=".5"/>
+    </fixed>
+    <fixed name="turn">
+      <joint joint="steer" coef="-.5"/>
+    </fixed>
+  </tendon>
+
+  <actuator>
+    <motor name="4x4" tendon="forward" ctrlrange="-1 1"/>
+    <motor name="turn" tendon="turn" ctrlrange="-1 1"/>
+  </actuator>
+
+  <sensor>
+    <rangefinder name="range_front" site="front_sensor" cutoff="1.0"/>
+    <rangefinder name="range_right" site="right_sensor" cutoff="0.5"/>
+    <rangefinder name="range_left" site="left_sensor" cutoff="0.5"/>
+    <jointactuatorfrc name="right" joint="right"/>
+    <jointactuatorfrc name="left" joint="left"/>
+    
+    <!-- Улучшенный датчик камеры -->
+    <camera name="camera_sensor" camera="robot_cam">
+      <resolution width="320" height="240"/>
+      <framerate>30</framerate>
+    </camera>
+  </sensor>
+</mujoco>
