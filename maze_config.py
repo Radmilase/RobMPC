@@ -10,14 +10,14 @@ MAZE_XML_PATH = "model/scene_2.xml" # Path to the MuJoCo XML file describing the
 # --- Robot and Goal Configuration (2D coordinates) ---
 # These are approximate and might need fine-tuning based on the visualizer
 ROBOT_START_POS_2D = np.array([-1.9, 1.3])
-# TARGET_POS_2D = np.array([0.8, -1.8])
+# TARGET_POS_2D = np.array([0.75, -1.75]) # A point in a more central chamber, slightly shifted
 # Let's pick a more accessible target for initial A* testing, within the upper part of the maze
 # Based on scene_2.xml, a point like (-0.5, 0.0) seems reachable from start.
 # Or for a longer path:
-TARGET_POS_2D = np.array([-0.3, -0.3]) # A point in a more central chamber
+TARGET_POS_2D = np.array([0.8, -1.8]) # The desired final target
 
 # --- A* Algorithm Configuration ---
-GRID_RESOLUTION = 0.1  # Resolution of the grid for A* (e.g., 0.1 units per cell)
+GRID_RESOLUTION = 0.05  # Resolution of the grid for A* (e.g., 0.1 units per cell)
 HEURISTIC_WEIGHT = 1.0 # Weight for the heuristic in A*
 
 # --- Potential Field Algorithm Configuration ---
