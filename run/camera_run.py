@@ -3,7 +3,7 @@ import cv2
 import time
 
 # Загрузка модели
-model = mujoco.MjModel.from_xml_path("C:/Users/rad/ptur/RobMPC/model_2/scene_2.xml")
+model = mujoco.MjModel.from_xml_path("C:\Study\ITMO\RobMPC\model_2\scene_2.xml")
 data = mujoco.MjData(model)
 renderer = mujoco.Renderer(model, 320, 240)  # Разрешение совпадает с камерой
 
