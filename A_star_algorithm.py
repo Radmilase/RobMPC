@@ -36,7 +36,7 @@ class AStar:
         """Округляет массив numpy с позицией и конвертирует в хешируемый кортеж."""
         return tuple(np.round(pos_np, self.DECIMAL_PRECISION))
 
-    def __init__(self, walls, world_min_bounds, world_max_bounds, start_pos, goal_pos, resolution, robot_radius=1.0):
+    def __init__(self, walls, world_min_bounds, world_max_bounds, start_pos, goal_pos, resolution, robot_radius):
         """
         Аргументы:
             walls (list): Список объектов Wall.
@@ -249,7 +249,7 @@ if __name__ == '__main__':
         print(f"A* Старт: {ROBOT_START_POS_2D}, Цель: {TARGET_POS_2D}, Разрешение: {GRID_RESOLUTION}")
         astar_planner = AStar(walls, min_bounds, max_bounds, 
                                 ROBOT_START_POS_2D, TARGET_POS_2D, 
-                                GRID_RESOLUTION, robot_radius=0.1 # Убедимся, что здесь 0.1
+                                GRID_RESOLUTION, robot_radius=0.15 # Убедимся, что здесь 0.1
                                 )
         
         path = astar_planner.find_path()

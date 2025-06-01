@@ -16,9 +16,9 @@ ROBOT_START_POS_2D = np.array([-1.9, 1.3])
 # Или для более длинного пути:
 TARGET_POS_2D = np.array([0.8, -1.8]) # Желаемая конечная цель
 
-# --- Конфигурация алгоритма A* ---
-GRID_RESOLUTION = 0.05  # Разрешение сетки для A* (например, 0.1 единиц на ячейку)
-HEURISTIC_WEIGHT = 1.0 # Вес для эвристики в A*
+# --- A* Algorithm Configuration ---
+GRID_RESOLUTION = 0.01  # Resolution of the grid for A* (e.g., 0.1 units per cell)
+HEURISTIC_WEIGHT = 1.0 # Weight for the heuristic in A*
 
 # --- Конфигурация алгоритма DFS ---
 DFS_GRID_RESOLUTION = 0.15 # Разрешение сетки для DFS
