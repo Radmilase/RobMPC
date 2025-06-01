@@ -1,33 +1,36 @@
 """
-Configuration file for the maze navigation project.
-Stores paths, coordinates, and other shared parameters.
+Файл конфигурации для проекта навигации в лабиринте.
+Содержит пути, координаты и другие общие параметры.
 """
 import numpy as np
 
-# --- Maze Configuration ---
-MAZE_XML_PATH = "model/scene_2.xml" # Path to the MuJoCo XML file describing the maze
+# --- Конфигурация лабиринта ---
+MAZE_XML_PATH = "model/scene_2.xml" # Путь к XML-файлу MuJoCo, описывающему лабиринт
 
-# --- Robot and Goal Configuration (2D coordinates) ---
-# These are approximate and might need fine-tuning based on the visualizer
+# --- Конфигурация робота и цели (2D координаты) ---
+# Эти значения приблизительные и могут потребовать точной настройки на основе визуализатора
 ROBOT_START_POS_2D = np.array([-1.9, 1.3])
-# TARGET_POS_2D = np.array([0.75, -1.75]) # A point in a more central chamber, slightly shifted
-# Let's pick a more accessible target for initial A* testing, within the upper part of the maze
-# Based on scene_2.xml, a point like (-0.5, 0.0) seems reachable from start.
-# Or for a longer path:
-TARGET_POS_2D = np.array([0.8, -1.8]) # The desired final target
+# TARGET_POS_2D = np.array([0.75, -1.75]) # Точка в более центральной камере, немного смещенная
+# Выберем более доступную цель для начального тестирования A*, в верхней части лабиринта
+# На основе scene_2.xml, точка типа (-0.5, 0.0) кажется достижимой с начальной позиции.
+# Или для более длинного пути:
+TARGET_POS_2D = np.array([0.8, -1.8]) # Желаемая конечная цель
 
-# --- A* Algorithm Configuration ---
-GRID_RESOLUTION = 0.05  # Resolution of the grid for A* (e.g., 0.1 units per cell)
-HEURISTIC_WEIGHT = 1.0 # Weight for the heuristic in A*
+# --- Конфигурация алгоритма A* ---
+GRID_RESOLUTION = 0.05  # Разрешение сетки для A* (например, 0.1 единиц на ячейку)
+HEURISTIC_WEIGHT = 1.0 # Вес для эвристики в A*
 
-# --- Potential Field Algorithm Configuration ---
-# (To be added later)
+# --- Конфигурация алгоритма DFS ---
+DFS_GRID_RESOLUTION = 0.15 # Разрешение сетки для DFS
 
-# --- Visualization Configuration ---
+# --- Конфигурация алгоритма потенциальных полей ---
+# (Будет добавлено позже)
+
+# --- Конфигурация визуализации ---
 VIS_PATH_COLOR = 'red'
 VIS_WALL_COLOR = 'blue'
 VIS_GRID_COLOR = 'grey'
 VIS_START_MARKER_COLOR = 'green'
 VIS_GOAL_MARKER_COLOR = 'magenta'
-VIS_FIGURE_SIZE = (10, 10) # Inches
-VIS_ROBOT_RADIUS = 0.05 # Approximate radius of the robot for collision checking (if needed) 
+VIS_FIGURE_SIZE = (10, 10) # В дюймах
+VIS_ROBOT_RADIUS = 0.05 # Приблизительный радиус робота для проверки столкновений (при необходимости) 
