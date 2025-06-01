@@ -27,7 +27,7 @@ class DepthFirstSearch:
         """Округляет массив numpy с позицией и конвертирует в хешируемый кортеж."""
         return tuple(np.round(pos_np, self.DECIMAL_PRECISION))
 
-    def __init__(self, walls, world_min_bounds, world_max_bounds, start_pos, goal_pos, resolution, robot_radius=0.1):
+    def __init__(self, walls, world_min_bounds, world_max_bounds, start_pos, goal_pos, resolution, robot_radius):
         self.walls = walls
         self.world_min_bounds = world_min_bounds
         self.world_max_bounds = world_max_bounds
@@ -163,7 +163,7 @@ if __name__ == '__main__':
         print(f"DFS Старт: {ROBOT_START_POS_2D}, Цель: {TARGET_POS_2D}, Разрешение: {DFS_GRID_RESOLUTION}")
         dfs_planner = DepthFirstSearch(walls, min_bounds, max_bounds,
                                  ROBOT_START_POS_2D, TARGET_POS_2D,
-                                 DFS_GRID_RESOLUTION, robot_radius=0.1)
+                                 DFS_GRID_RESOLUTION, robot_radius=0.18)
         
         path = dfs_planner.find_path()
 

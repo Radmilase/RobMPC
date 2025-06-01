@@ -3,7 +3,8 @@ from mujoco import viewer
 import numpy as np
 
 from A_star_algorithm import AStar
-from maze_config import ROBOT_START_POS_2D, TARGET_POS_2D, GRID_RESOLUTION
+from deep import DepthFirstSearch
+from maze_config import ROBOT_START_POS_2D, TARGET_POS_2D, GRID_RESOLUTION, DFS_GRID_RESOLUTION
 from maze_parser import MazeParser
 
 def get_trajectory():
@@ -17,6 +18,12 @@ def get_trajectory():
                         )
 
     trajectory = astar_planner.find_path()
+
+    # dfs_planner = DepthFirstSearch(walls, min_bounds, max_bounds,
+    #                             ROBOT_START_POS_2D, TARGET_POS_2D,
+    #                             DFS_GRID_RESOLUTION, robot_radius=0.18)
+    
+    # trajectory = dfs_planner.find_path()
 
     return trajectory
 
@@ -59,7 +66,6 @@ class PDController:
         self.prev_angle_err = 0
 
     def pd_reg(self, actual_dist, actual_angle, target_dist, target_angle, dt):
-        print(dt)
         v = Kp_lin * (target_dist - actual_dist) + Kd_lin * ((target_dist - actual_dist) - self.prev_dist_err) / dt
         delta = Kp_ang * (target_angle - actual_angle) + Kd_ang * ((target_angle - actual_angle) - self.prev_angle_err) / dt
 
@@ -83,8 +89,13 @@ def control_func(model, data):
 if __name__ == '__main__':
     trajectory = get_trajectory()
 
+    # A-Star params
     Kp_lin, Kd_lin = 0.2, 0.2
     Kp_ang, Kd_ang = -0.05, -0.13
+
+    # Deep params
+    # Kp_lin, Kd_lin = 0.2, 0.2
+    # Kp_ang, Kd_ang = -0.05, -0.15
     controller = PDController(Kp_lin, Kd_lin, Kp_ang, Kd_ang)
 
     # Загрузка модели

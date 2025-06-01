@@ -21,7 +21,7 @@ GRID_RESOLUTION = 0.01  # Resolution of the grid for A* (e.g., 0.1 units per cel
 HEURISTIC_WEIGHT = 1.0 # Weight for the heuristic in A*
 
 # --- Конфигурация алгоритма DFS ---
-DFS_GRID_RESOLUTION = 0.15 # Разрешение сетки для DFS
+DFS_GRID_RESOLUTION = 0.1 # Разрешение сетки для DFS
 
 # --- Конфигурация алгоритма потенциальных полей ---
 # (Будет добавлено позже)
