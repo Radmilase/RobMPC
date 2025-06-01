@@ -17,7 +17,7 @@ ROBOT_START_POS_2D = np.array([-1.9, 1.3])
 TARGET_POS_2D = np.array([0.8, -1.8]) # The desired final target
 
 # --- A* Algorithm Configuration ---
-GRID_RESOLUTION = 0.05  # Resolution of the grid for A* (e.g., 0.1 units per cell)
+GRID_RESOLUTION = 0.01  # Resolution of the grid for A* (e.g., 0.1 units per cell)
 HEURISTIC_WEIGHT = 1.0 # Weight for the heuristic in A*
 
 # --- Potential Field Algorithm Configuration ---
