@@ -42,6 +42,7 @@ def get_target_pos_theta(trajectory, x, y):
     dy = target_point[1] - y
     dist_to_target = np.hypot(dx, dy)
 
+    # 0.1 for deep search and 0.01 for A-star
     if dist_to_target < 0.1:  # Если близко к точке — переходим к следующей
         trajectory.pop(0)
         if not trajectory:
