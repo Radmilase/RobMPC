@@ -21,7 +21,7 @@ GRID_RESOLUTION = 0.01  # Resolution of the grid for A* (e.g., 0.1 units per cel
 HEURISTIC_WEIGHT = 1.0 # Weight for the heuristic in A*
 
 # --- Конфигурация алгоритма DFS ---
-DFS_GRID_RESOLUTION = 0.1 # Разрешение сетки для DFS
+DFS_GRID_RESOLUTION = 0.1 # Разрешение сетки для DFS 
 
 # --- Конфигурация алгоритма потенциальных полей ---
 # (Будет добавлено позже)
@@ -33,4 +33,4 @@ VIS_GRID_COLOR = 'grey'
 VIS_START_MARKER_COLOR = 'green'
 VIS_GOAL_MARKER_COLOR = 'magenta'
 VIS_FIGURE_SIZE = (10, 10) # В дюймах
-VIS_ROBOT_RADIUS = 0.05 # Приблизительный радиус робота для проверки столкновений (при необходимости) 
+VIS_ROBOT_RADIUS = 0.15 # Приблизительный радиус робота для проверки столкновений (при необходимости)  

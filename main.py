@@ -12,18 +12,18 @@ def get_trajectory():
     walls = parser.get_walls()
     min_bounds, max_bounds = parser.get_world_bounds()
 
-    astar_planner = AStar(walls, min_bounds, max_bounds, 
-                        ROBOT_START_POS_2D, TARGET_POS_2D, 
-                        GRID_RESOLUTION, robot_radius=0.15
-                        )
+    # astar_planner = AStar(walls, min_bounds, max_bounds, 
+    #                     ROBOT_START_POS_2D, TARGET_POS_2D, 
+    #                     GRID_RESOLUTION, robot_radius=0.15
+    #                     )
 
-    trajectory = astar_planner.find_path()
+    # trajectory = astar_planner.find_path()
 
-    # dfs_planner = DepthFirstSearch(walls, min_bounds, max_bounds,
-    #                             ROBOT_START_POS_2D, TARGET_POS_2D,
-    #                             DFS_GRID_RESOLUTION, robot_radius=0.18)
+    dfs_planner = DepthFirstSearch(walls, min_bounds, max_bounds,
+                                ROBOT_START_POS_2D, TARGET_POS_2D,
+                                DFS_GRID_RESOLUTION, robot_radius=0.15)
     
-    # trajectory = dfs_planner.find_path()
+    trajectory = dfs_planner.find_path()
 
     return trajectory
 
@@ -42,7 +42,7 @@ def get_target_pos_theta(trajectory, x, y):
     dy = target_point[1] - y
     dist_to_target = np.hypot(dx, dy)
 
-    if dist_to_target < 0.01:  # Если близко к точке — переходим к следующей
+    if dist_to_target < 0.1:  # Если близко к точке — переходим к следующей
         trajectory.pop(0)
         if not trajectory:
             return (0, 0), trajectory
@@ -85,17 +85,16 @@ def control_func(model, data):
 
     data.ctrl = controller.pd_reg(dist_to_target, angle_target, np.hypot(x, y), theta, model.opt.timestep)
 
-
 if __name__ == '__main__':
     trajectory = get_trajectory()
 
     # A-Star params
-    Kp_lin, Kd_lin = 0.2, 0.2
-    Kp_ang, Kd_ang = -0.05, -0.13
+    # Kp_lin, Kd_lin = 0.2, 0.2
+    # Kp_ang, Kd_ang = -0.05, -0.13
 
     # Deep params
-    # Kp_lin, Kd_lin = 0.2, 0.2
-    # Kp_ang, Kd_ang = -0.05, -0.15
+    Kp_lin, Kd_lin = 0.2, 0.2
+    Kp_ang, Kd_ang = -0.01, -0.30
     controller = PDController(Kp_lin, Kd_lin, Kp_ang, Kd_ang)
 
     # Загрузка модели

@@ -163,7 +163,7 @@ if __name__ == '__main__':
         print(f"DFS Старт: {ROBOT_START_POS_2D}, Цель: {TARGET_POS_2D}, Разрешение: {DFS_GRID_RESOLUTION}")
         dfs_planner = DepthFirstSearch(walls, min_bounds, max_bounds,
                                  ROBOT_START_POS_2D, TARGET_POS_2D,
-                                 DFS_GRID_RESOLUTION, robot_radius=0.18)
+                                 DFS_GRID_RESOLUTION, robot_radius=0.15)
         
         path = dfs_planner.find_path()
 
